@@ -1,4 +1,5 @@
 #include "../../include/gfx/window.h"
+#include "../../include/gfx/renderer.h"
 #include <iostream>
 
 namespace Minecraft {
@@ -45,7 +46,6 @@ namespace Minecraft {
 			glfwSetKeyCallback(handle, keyCallback);
 			glfwSetFramebufferSizeCallback(handle, framebufferSizeCallback);
 
-
 			glfwMakeContextCurrent(handle);
 			gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 			glfwSwapInterval(1);
@@ -57,11 +57,19 @@ namespace Minecraft {
 		}
 
 		void Window::windowLoop() {
+			Renderer renderer;
+			renderer.renderTriangle();
+
 			while (!glfwWindowShouldClose(handle)) {
 				glfwPollEvents();
 
 				glClearColor(0.3, 0.7, 0.9, 1);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				// Render triangle
+				glUseProgram(renderer.shaders[0].handle);
+				bindVAO(renderer.vao);
+				glDrawArrays(GL_TRIANGLES, 0, 3);
 
 				glfwSwapBuffers(handle);
 			}
