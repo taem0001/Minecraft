@@ -1,4 +1,5 @@
 #include "../include/gfx/window.h"
+#include "../include/gfx/renderer.h"
 #include <iostream>
 
 int main() {

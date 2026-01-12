@@ -4,7 +4,6 @@
 
 namespace Minecraft {
 	namespace GFX {
-		// GLFW callback functions
 		static void errorCallback(int error, const char *description) {
 			fprintf(stderr, "[ERROR] %s\n", description);
 		}
@@ -20,7 +19,6 @@ namespace Minecraft {
 			glViewport(0, 0, width, height);
 		}
 
-		// Window class functions implemented
 		Window::Window(int width, int height) {
 			this->width = width;
 			this->height = height;
@@ -36,7 +34,7 @@ namespace Minecraft {
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 			this->handle =
-				glfwCreateWindow(width, height, "Minecraft", NULL, NULL);
+				glfwCreateWindow(width, height, "BadMinecraft", NULL, NULL);
 
 			if (!handle) {
 				glfwTerminate();
@@ -58,7 +56,6 @@ namespace Minecraft {
 
 		void Window::windowLoop() {
 			Renderer renderer;
-			renderer.renderTriangle();
 
 			while (!glfwWindowShouldClose(handle)) {
 				glfwPollEvents();
@@ -66,20 +63,23 @@ namespace Minecraft {
 				glClearColor(0.3, 0.7, 0.9, 1);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				// Render triangle
-				glUseProgram(renderer.shaders[0].handle);
-				bindVAO(renderer.vao);
-				glDrawArrays(GL_TRIANGLES, 0, 3);
+				render(&renderer);
 
 				glfwSwapBuffers(handle);
 			}
 			printf("[INFO] Shutting down.\n");
 		}
 
+		void Window::render(Renderer *renderer) {
+			renderer->renderTriangle();
+			glUseProgram(renderer->shaders[0].handle);
+			bindVAO(renderer->vao);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+		}
+
 		Window::~Window() {
 			glfwDestroyWindow(handle);
 			glfwTerminate();
 		}
-
 	} // namespace GFX
 } // namespace Minecraft
