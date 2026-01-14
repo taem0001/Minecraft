@@ -8,6 +8,7 @@ namespace Minecraft {
 				GLuint handle;
 
 				Shader(const char *, const char *);
+				Shader();
 				~Shader();
 				void use();
 				void setBool(const char *, bool) const;
