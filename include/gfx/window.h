@@ -14,6 +14,7 @@ namespace Minecraft {
 
 			private:
 				GLFWwindow *handle;
+				struct Renderer renderer;
 				int width, height;
 
 				void render(Renderer *);

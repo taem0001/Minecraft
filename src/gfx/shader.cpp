@@ -49,7 +49,7 @@ namespace Minecraft {
 			return shader;
 		}
 
-		Shader::Shader(const char *vspath, const char *fspath) {
+		void Shader::init(const char *vspath, const char *fspath) {
 			GLuint vertex	= _compile(vspath, GL_VERTEX_SHADER);
 			GLuint fragment = _compile(fspath, GL_FRAGMENT_SHADER);
 
@@ -71,8 +71,6 @@ namespace Minecraft {
 			glDeleteShader(vertex);
 			glDeleteShader(fragment);
 		}
-
-		Shader::Shader() {}
 
 		Shader::~Shader() { glDeleteProgram(handle); }
 

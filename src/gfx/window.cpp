@@ -19,10 +19,7 @@ namespace Minecraft {
 			glViewport(0, 0, width, height);
 		}
 
-		Window::Window(int width, int height) {
-			this->width = width;
-			this->height = height;
-
+		Window::Window(int w, int h) : renderer(), width(w), height(h) {
 			glfwSetErrorCallback(errorCallback);
 
 			if (!glfwInit()) {
@@ -48,6 +45,8 @@ namespace Minecraft {
 			gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 			glfwSwapInterval(1);
 
+			renderer.init();
+
 			// Log info
 			printf("[INFO] Renderer: %s.\n", glGetString(GL_RENDERER));
 			printf("[INFO] OpenGL version supported %s.\n",
@@ -55,8 +54,6 @@ namespace Minecraft {
 		}
 
 		void Window::windowLoop() {
-			Renderer renderer;
-
 			while (!glfwWindowShouldClose(handle)) {
 				glfwPollEvents();
 

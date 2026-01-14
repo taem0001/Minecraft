@@ -4,11 +4,13 @@
 
 namespace Minecraft {
 	namespace GFX {
-		Renderer::Renderer()
-			: vbo(createVBO(GL_ARRAY_BUFFER)), vao(createVAO()) {
+		void Renderer::init() {
+			this->vbo = createVBO(GL_ARRAY_BUFFER);
+			this->vao = createVAO();
+
 			for (int i = 0; i < SHADERNUM; i++) {
-				this->shader[i] = Shader("res/shaders/triangle.vert",
-										 "res/shaders/triangle.frag");
+				this->shader[i].init("res/shaders/triangle.vert",
+									 "res/shaders/triangle.frag");
 			}
 		}
 

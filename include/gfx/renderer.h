@@ -11,8 +11,8 @@ namespace Minecraft {
 #define SHADERNUM (TRIANGLE + 1)
 
 		struct Renderer {
-				Renderer();
 				~Renderer();
+				void init();
 				void renderTriangle(); // TODO: This is only for testing shaders
 
 				struct Shader shader[SHADERNUM];
