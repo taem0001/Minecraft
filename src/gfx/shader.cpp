@@ -1,7 +1,5 @@
 #include "../../include/gfx/shader.h"
-#include <fstream>
 #include <iostream>
-#include <string>
 
 using namespace std;
 
@@ -19,7 +17,7 @@ namespace Minecraft {
 
 			fseek(fp, 0, SEEK_END);
 			int size = ftell(fp);
-			int n = size / sizeof(char);
+			int n	 = size / sizeof(char);
 
 			buf = (char *)malloc(sizeof(char) * n);
 			if (!buf) {
@@ -51,8 +49,8 @@ namespace Minecraft {
 			return shader;
 		}
 
-		Shader::Shader(const char *vspath, const char *fspath) {
-			GLuint vertex = _compile(vspath, GL_VERTEX_SHADER);
+		void Shader::init(const char *vspath, const char *fspath) {
+			GLuint vertex	= _compile(vspath, GL_VERTEX_SHADER);
 			GLuint fragment = _compile(fspath, GL_FRAGMENT_SHADER);
 
 			// Create shader program
@@ -82,11 +80,11 @@ namespace Minecraft {
 			glUniform1i(glGetUniformLocation(handle, name), (int)value);
 		}
 
-		void Shader::setInt(const const char *name, int value) const {
+		void Shader::setInt(const char *name, int value) const {
 			glUniform1i(glGetUniformLocation(handle, name), value);
 		}
 
-		void Shader::setFloat(const const char *name, float value) const {
+		void Shader::setFloat(const char *name, float value) const {
 			glUniform1f(glGetUniformLocation(handle, name), value);
 		}
 	} // namespace GFX

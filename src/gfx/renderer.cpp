@@ -1,18 +1,22 @@
 #include "../../include/gfx/renderer.h"
+#include <iostream>
 #include <stdlib.h>
 
 namespace Minecraft {
 	namespace GFX {
-		Renderer::Renderer() {
+		void Renderer::init() {
 			this->vbo = createVBO(GL_ARRAY_BUFFER);
 			this->vao = createVAO();
-			this->shader = new Shader("res/shaders/triangle.vert", "res/shaders/triangle.frag");
+
+			for (int i = 0; i < SHADERNUM; i++) {
+				this->shader[i].init("res/shaders/triangle.vert",
+									 "res/shaders/triangle.frag");
+			}
 		}
 
 		Renderer::~Renderer() {
 			destroyVBO(this->vbo);
 			destroyVAO(this->vao);
-			this->shader->~Shader();
 		}
 
 		void Renderer::renderTriangle() {
@@ -22,8 +26,8 @@ namespace Minecraft {
 				0.0f,  0.5f,  0.0f	// top
 			};
 
-            bufferVBO(this->vbo, vertices, sizeof(vertices));
-            attrVAO(this->vao, this->vbo, 0, 3, GL_FLOAT, 0);
+			bufferVBO(this->vbo, vertices, sizeof(vertices));
+			attrVAO(this->vao, this->vbo, 0, 3, GL_FLOAT, 0);
 		}
 	} // namespace GFX
 } // namespace Minecraft

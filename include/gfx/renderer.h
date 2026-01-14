@@ -7,14 +7,15 @@
 
 namespace Minecraft {
 	namespace GFX {
-		class Renderer {
-			public:
-				Renderer();
+		enum ShaderType { TRIANGLE = 0 };
+#define SHADERNUM (TRIANGLE + 1)
+
+		struct Renderer {
 				~Renderer();
+				void init();
 				void renderTriangle(); // TODO: This is only for testing shaders
-				
-				// TODO: Maybe just make this a struct
-				struct Shader *shader;
+
+				struct Shader shader[SHADERNUM];
 				struct VBO vbo;
 				struct VAO vao;
 		};
