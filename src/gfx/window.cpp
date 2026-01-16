@@ -1,27 +1,30 @@
 #include "../../include/gfx/window.h"
 #include "../../include/gfx/renderer.h"
+#include <chrono>
 #include <iostream>
 
 namespace Minecraft {
 	namespace GFX {
 		using namespace std::chrono;
 
-		static void errorCallback(int error, const char *description) {
+		void Window::errorCallback(int error, const char *description) {
 			fprintf(stderr, "[ERROR] %s\n", description);
 		}
 
-		static void keyCallback(GLFWwindow *window, int key, int scancode,
-								int action, int mods) {
+		void Window::keyCallback(GLFWwindow *window, int key, int scancode,
+								 int action, int mods) {
 			if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 				glfwSetWindowShouldClose(window, GLFW_TRUE);
 		}
 
-		static void framebufferSizeCallback(GLFWwindow *window, int width,
-											int height) {
+		void Window::framebufferSizeCallback(GLFWwindow *window, int width,
+											 int height) {
 			glViewport(0, 0, width, height);
 		}
 
-		Window::Window(int w, int h) : renderer(), width(w), height(h) {
+		Window::Window(int w, int h)
+			: renderer(), width(w), height(h), deltatime(0), lastframe(0),
+			  start(steady_clock::now()) {
 			glfwSetErrorCallback(errorCallback);
 
 			if (!glfwInit()) {
@@ -62,31 +65,48 @@ namespace Minecraft {
 
 			u64 nextgametick = getTickCount();
 			int loops;
-			float interpolation;
 
 			while (!glfwWindowShouldClose(handle)) {
+				auto now = steady_clock::now();
+				u64 currentframe = duration_cast<milliseconds>(now - start).count();
+				deltatime = currentframe - lastframe;
+				lastframe = currentframe;
+
 				glfwPollEvents();
+				processInput();
 
 				loops = 0;
-				while (getTickCount() > nextgametick && loops < MAX_FRAMESKIP) {
-					// Update
-					nextgametick += SKIP_TICKS;
-					loops++;
-				}
+				// while (getTickCount() > nextgametick && loops < MAX_FRAMESKIP) {
+				// 	// Update
+				// 	nextgametick += SKIP_TICKS;
+				// 	loops++;
+				// }
 
 				glClearColor(0.3, 0.7, 0.9, 1);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				render(&renderer);
+				render();
 				glfwSwapBuffers(handle);
 			}
 			printf("[INFO] Shutting down.\n");
 		}
 
-		void Window::render(Renderer *renderer) {
-			renderer->renderTriangle();
-			renderer->shader->use();
-			bindVAO(renderer->vao);
+		void Window::render() {
+			renderer.renderTriangle();
+			renderer.shader[0].use();
+
+			glm::mat4 proj = glm::perspective(
+				glm::radians(renderer.cam.fovy), (float)width / (float)height,
+				renderer.cam.near, renderer.cam.far);
+			renderer.shader[0].setMat4("projection", proj);
+
+			glm::mat4 view = renderer.cam.getViewMat();
+			renderer.shader[0].setMat4("view", view);
+
+			glm::mat4 model = glm::mat4(1.0f);
+			renderer.shader[0].setMat4("model", model);
+
+			bindVAO(renderer.vao);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 		}
 
@@ -96,10 +116,20 @@ namespace Minecraft {
 		}
 
 		u64 Window::getTickCount() {
-			u64 ms = duration_cast<milliseconds>(
-						 system_clock::now().time_since_epoch())
-						 .count();
+			auto now = steady_clock::now();
+			u64 ms = duration_cast<milliseconds>(now - start).count();
 			return ms / 50;
+		}
+
+		void Window::processInput() {
+			if (glfwGetKey(handle, GLFW_KEY_W) == GLFW_PRESS)
+				renderer.cam.processKey(Entity::FORWARD, deltatime);
+			if (glfwGetKey(handle, GLFW_KEY_S) == GLFW_PRESS)
+				renderer.cam.processKey(Entity::BACKWARD, deltatime);
+			if (glfwGetKey(handle, GLFW_KEY_A) == GLFW_PRESS)
+				renderer.cam.processKey(Entity::LEFT, deltatime);
+			if (glfwGetKey(handle, GLFW_KEY_D) == GLFW_PRESS)
+				renderer.cam.processKey(Entity::RIGHT, deltatime);
 		}
 	} // namespace GFX
 } // namespace Minecraft

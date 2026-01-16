@@ -1,4 +1,5 @@
 #include "../../include/gfx/shader.h"
+#include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 
 using namespace std;
@@ -86,6 +87,11 @@ namespace Minecraft {
 
 		void Shader::setFloat(const char *name, float value) const {
 			glUniform1f(glGetUniformLocation(handle, name), value);
+		}
+
+		void Shader::setMat4(const char *name, glm::mat4 matrix) const {
+			glUniformMatrix4fv(glGetUniformLocation(handle, name), 1, GL_FALSE,
+							   glm::value_ptr(matrix));
 		}
 	} // namespace GFX
 } // namespace Minecraft

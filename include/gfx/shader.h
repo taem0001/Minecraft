@@ -1,6 +1,9 @@
 #pragma once
 
 #include "gfx.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Minecraft {
 	namespace GFX {
@@ -13,6 +16,7 @@ namespace Minecraft {
 				void setBool(const char *, bool) const;
 				void setInt(const char *, int) const;
 				void setFloat(const char *, float) const;
+				void setMat4(const char *, glm::mat4) const;
 		};
 	} // namespace GFX
 } // namespace Minecraft

@@ -3,24 +3,28 @@
 
 namespace Minecraft {
 	namespace Entity {
-		Camera::Camera(glm::vec3 p, glm::vec3 u, float y, float pi)
+		Camera::Camera(glm::vec3 p, glm::vec3 u, float y, float pi, float n, float f)
 			: front(glm::vec3(0.0f, 0.0f, -1.0f)), movespeed(SPEED),
-			  mousesens(SENSITIVITY) {
+			  mousesens(SENSITIVITY), fovy(FOVY) {
 			pos = p;
 			worldup = u;
 			yaw = y;
 			pitch = pi;
+			near = n;
+			far = f;
 			updateCamVects();
 		}
 
 		Camera::Camera(float posX, float posY, float posZ, float upX, float upY,
-					   float upZ, float y, float p)
+					   float upZ, float y, float p, float n, float f)
 			: front(glm::vec3(0.0f, 0.0f, -1.0f)), movespeed(SPEED),
-			  mousesens(SENSITIVITY) {
+			  mousesens(SENSITIVITY), fovy(FOVY) {
 			pos = glm::vec3(posX, posY, posZ);
 			worldup = glm::vec3(upX, upY, upZ);
 			yaw = y;
 			pitch = p;
+			near = n;
+			far = f;
 			updateCamVects();
 		}
 
@@ -29,7 +33,7 @@ namespace Minecraft {
 		}
 
 		void Camera::processKey(CamMovement move, float deltatime) {
-			float vel = movespeed * deltatime;
+			float vel = movespeed * (deltatime / 1000);
 			switch (move) {
 			case FORWARD:
 				pos += front * vel;

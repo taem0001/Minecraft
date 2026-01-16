@@ -4,11 +4,13 @@
 #include "shader.h"
 #include "vao.h"
 #include "vbo.h"
+#include "../entity/camera.h"
 
 namespace Minecraft {
 	namespace GFX {
 		enum ShaderType { TRIANGLE = 0 };
 #define SHADERNUM (TRIANGLE + 1)
+
 
 		struct Renderer {
 				~Renderer();
@@ -18,6 +20,8 @@ namespace Minecraft {
 				struct Shader shader[SHADERNUM];
 				struct VBO vbo;
 				struct VAO vao;
+
+				Entity::Camera cam;
 		};
 	} // namespace GFX
 } // namespace Minecraft
