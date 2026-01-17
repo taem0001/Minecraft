@@ -54,7 +54,7 @@ namespace Minecraft {
 		}
 
 		void Camera::processMouse(float xoffset, float yoffset,
-								  GLboolean constrainpitch = true) {
+								  GLboolean constrainpitch) {
 			xoffset *= mousesens;
 			yoffset *= mousesens;
 			yaw += xoffset;

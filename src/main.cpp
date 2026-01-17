@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main() {
-	Minecraft::GFX::Window window(1280, 720);
+	Minecraft::GFX::Window window;
 	window.windowLoop();
 	return 0;
 }

@@ -7,6 +7,9 @@ namespace Minecraft {
 	namespace GFX {
 		using namespace std::chrono;
 
+		float Window::xoffset;
+		float Window::yoffset;
+
 		void Window::errorCallback(int error, const char *description) {
 			fprintf(stderr, "[ERROR] %s\n", description);
 		}
@@ -22,8 +25,30 @@ namespace Minecraft {
 			glViewport(0, 0, width, height);
 		}
 
-		Window::Window(int w, int h)
-			: renderer(), width(w), height(h), deltatime(0), lastframe(0) {
+		void Window::mouseCallback(GLFWwindow *window, double xposIn,
+								   double yposIn) {
+			static float lastx = WIDTH / 2;
+			static float lasty = HEIGHT / 2;
+			static bool firstmouse = true;
+			float xpos = static_cast<float>(xposIn);
+			float ypos = static_cast<float>(yposIn);
+
+			if (firstmouse) {
+				lastx = xpos;
+				lasty = ypos;
+				firstmouse = !firstmouse;
+			}
+
+			xoffset = xpos - lastx;
+			yoffset = lasty - ypos;
+
+			lastx = xpos;
+			lasty = ypos;
+		}
+
+		Window::Window()
+			: renderer(), width(WIDTH), height(HEIGHT), deltatime(0),
+			  lastframe(0) {
 
 			glfwSetErrorCallback(errorCallback);
 
@@ -45,6 +70,7 @@ namespace Minecraft {
 
 			glfwSetKeyCallback(handle, keyCallback);
 			glfwSetFramebufferSizeCallback(handle, framebufferSizeCallback);
+			glfwSetCursorPosCallback(handle, mouseCallback);
 
 			glfwMakeContextCurrent(handle);
 			gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -62,6 +88,8 @@ namespace Minecraft {
 			auto start = steady_clock::now();
 
 			while (!glfwWindowShouldClose(handle)) {
+				renderer.cam.processMouse(xoffset, yoffset);
+
 				auto now = steady_clock::now();
 				u64 currentframe =
 					duration_cast<milliseconds>(now - start).count();
