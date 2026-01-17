@@ -5,18 +5,24 @@
 namespace Minecraft {
 	namespace GFX {
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, // left
-			0.5f,  -0.5f, 0.0f, // right
-			0.0f,  0.5f,  0.0f	// top
+			0.5f,  0.5f,  0.0f, // top right
+			0.5f,  -0.5f, 0.0f, // bottom right
+			-0.5f, -0.5f, 0.0f, // bottom left
+			-0.5f, 0.5f,  0.0f	// top left
+		};
+		unsigned int indices[] = {
+			0, 1, 3, // first Triangle
+			1, 2, 3	 // second Triangle
 		};
 
 		void Renderer::init() {
 			this->vbo = createVBO(GL_ARRAY_BUFFER);
+			this->ebo = createVBO(GL_ELEMENT_ARRAY_BUFFER);
 			this->vao = createVAO();
 
 			for (int i = 0; i < SHADERNUM; i++) {
-				this->shader[i].init("res/shaders/triangle.vert",
-									 "res/shaders/triangle.frag");
+				this->shader[i].init("res/shaders/block.vert",
+									 "res/shaders/block.frag");
 			}
 
 			this->cam = Entity::Camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -24,12 +30,14 @@ namespace Minecraft {
 
 		Renderer::~Renderer() {
 			destroyVBO(this->vbo);
+			destroyVBO(this->ebo);
 			destroyVAO(this->vao);
 		}
 
-		void Renderer::renderTriangle() {
+		void Renderer::prepareRect() {
 			bufferVBO(this->vbo, vertices, sizeof(vertices));
-			attrVAO(this->vao, this->vbo, 0, 3, GL_FLOAT, 0);
+			bufferVBO(this->ebo, indices, sizeof(indices));
+			attrVAO(this->vao, this->vbo, this->ebo, 0, 3, GL_FLOAT, 0);
 		}
 	} // namespace GFX
 } // namespace Minecraft

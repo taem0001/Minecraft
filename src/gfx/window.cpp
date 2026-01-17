@@ -86,6 +86,7 @@ namespace Minecraft {
 
 		void Window::windowLoop() {
 			auto start = steady_clock::now();
+			renderer.prepareRect();
 
 			while (!glfwWindowShouldClose(handle)) {
 				renderer.cam.processMouse(xoffset, yoffset);
@@ -109,7 +110,6 @@ namespace Minecraft {
 		}
 
 		void Window::render() {
-			renderer.renderTriangle();
 			renderer.shader[0].use();
 
 			glm::mat4 proj = glm::perspective(
@@ -124,7 +124,7 @@ namespace Minecraft {
 			renderer.shader[0].setMat4("model", model);
 
 			bindVAO(renderer.vao);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 
 		Window::~Window() {

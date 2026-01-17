@@ -14,10 +14,10 @@ namespace Minecraft {
 		struct Renderer {
 				~Renderer();
 				void init();
-				void renderTriangle(); // TODO: This is only for testing shaders
+				void prepareRect();
 
 				struct Shader shader[SHADERNUM];
-				struct VBO vbo;
+				struct VBO vbo, ebo;
 				struct VAO vao;
 
 				Entity::Camera cam;
