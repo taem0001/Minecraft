@@ -1,4 +1,4 @@
-#include "../../include/gfx/vbo.h"
+#include "../../include/gfx/vbo.hpp"
 
 namespace Minecraft {
 	namespace GFX {

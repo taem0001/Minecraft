@@ -1,4 +1,4 @@
-#include "../../include/gfx/vao.h"
+#include "../../include/gfx/vao.hpp"
 
 namespace Minecraft {
 	namespace GFX {

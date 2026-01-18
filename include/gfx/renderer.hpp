@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../entity/camera.h"
-#include "gfx.h"
-#include "shader.h"
-#include "vao.h"
-#include "vbo.h"
+#include "../entity/camera.hpp"
+#include "gfx.hpp"
+#include "shader.hpp"
+#include "vao.hpp"
+#include "vbo.hpp"
 
 namespace Minecraft {
 	namespace GFX {

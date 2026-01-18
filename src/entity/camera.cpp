@@ -1,4 +1,4 @@
-#include "../../include/entity/camera.h"
+#include "../../include/entity/camera.hpp"
 #include "glm/geometric.hpp"
 
 namespace Minecraft {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../util/types.h"
-#include "gfx.h"
-#include "renderer.h"
+#include "../util/types.hpp"
+#include "gfx.hpp"
+#include "renderer.hpp"
 #include <chrono>
 
 namespace Minecraft {

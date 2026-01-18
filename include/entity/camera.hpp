@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../gfx/gfx.h"
+#include "../gfx/gfx.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

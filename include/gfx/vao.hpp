@@ -1,7 +1,7 @@
 #pragma once
 
-#include "gfx.h"
-#include "vbo.h"
+#include "gfx.hpp"
+#include "vbo.hpp"
 
 namespace Minecraft {
 	namespace GFX {

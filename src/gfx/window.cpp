@@ -1,5 +1,5 @@
-#include "../../include/gfx/window.h"
-#include "../../include/gfx/renderer.h"
+#include "../../include/gfx/window.hpp"
+#include "../../include/gfx/renderer.hpp"
 #include <chrono>
 #include <iostream>
 

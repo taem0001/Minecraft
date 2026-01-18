@@ -1,4 +1,4 @@
-#include "../../include/gfx/renderer.h"
+#include "../../include/gfx/renderer.hpp"
 #include <iostream>
 #include <stdlib.h>
 
