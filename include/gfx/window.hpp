@@ -1,24 +1,21 @@
 #pragma once
 
+#include "../util/macros.hpp"
 #include "../util/types.hpp"
+#include "../world/world.hpp"
 #include "gfx.hpp"
 #include "renderer.hpp"
-#include "../util/macros.hpp"
 
 namespace Minecraft {
 	namespace GFX {
-#define WIDTH  1280
-#define HEIGHT 720
-
 		class Window {
 			public:
 				Window();
 				~Window();
-				void windowLoop();
+				void windowLoop(Renderer &renderer, World::World &world);
 
 			private:
 				GLFWwindow *handle;
-				struct Renderer renderer;
 				int width, height;
 				double deltatime, lastframe;
 
@@ -26,9 +23,8 @@ namespace Minecraft {
 				static void keyCallback(GLFWwindow *, int, int, int, int);
 				static void framebufferSizeCallback(GLFWwindow *, int, int);
 
-				void render();
-				void processMouse();
-				void processInput();
+				void processMouse(Renderer &renderer);
+				void processInput(Renderer &renderer);
 		};
 	} // namespace GFX
 } // namespace Minecraft
