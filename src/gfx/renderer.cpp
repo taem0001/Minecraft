@@ -12,10 +12,21 @@ namespace Minecraft {
 				this->shader[i].init("res/shaders/block.vert",
 									 "res/shaders/block.frag");
 			}
+			texture.init("res/textures/dirt.png");
 
 			bufferVBO(this->vbo, World::vertices, sizeof(World::vertices));
 			bufferVBO(this->ebo, World::indices, sizeof(World::indices));
-			attrVAO(this->vao, this->vbo, this->ebo, 0, 3, GL_FLOAT, 0);
+			
+			bindVAO(this->vao);
+			bindVBO(this->vbo);
+			bindVBO(this->ebo);
+
+			// Setup vertex pointer arrays
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
 		}
 
 		Renderer::~Renderer() {
@@ -42,7 +53,7 @@ namespace Minecraft {
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model, w.blocks[i].pos);
 				shader[0].setMat4("model", model);
-				glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void *)0);
 			}
 		}
 	} // namespace GFX

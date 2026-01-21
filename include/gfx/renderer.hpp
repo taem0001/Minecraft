@@ -5,6 +5,7 @@
 #include "../world/world.hpp"
 #include "gfx.hpp"
 #include "shader.hpp"
+#include "texture.hpp"
 #include "vao.hpp"
 #include "vbo.hpp"
 
@@ -29,6 +30,7 @@ namespace Minecraft {
 
 			private:
 				Shader shader[SHADERNUM];
+				Texture texture;
 				Entity::Camera cam;
 				struct VBO vbo, ebo;
 				struct VAO vao;

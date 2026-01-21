@@ -6,33 +6,48 @@
 
 namespace Minecraft {
 	namespace World {
-		enum BlockType { DIRT };
+		enum BlockType { AIR = 0, DIRT };
 
 		static float vertices[] = {
-			0.5f,  0.5f,  0.0f, // top right
-			0.5f,  -0.5f, 0.0f, // bottom right
-			-0.5f, -0.5f, 0.0f, // bottom left
-			-0.5f, 0.5f,  0.0f, // top left
-			0.5f,  0.5f,  1.0f, // top right - behind
-			0.5f,  -0.5f, 1.0f, // bottom right - behind
-			-0.5f, -0.5f, 1.0f, // bottom left - behind
-			-0.5f, 0.5f,  1.0f	// top left - behind
-		};
-
-		static float texcoords[] = {
-			0.0f, 0.0f, // Lower left corner
-			0.0f, 1.0f, // Upper left corner
-			1.0f, 0.0f, // Lower right corner
-			1.0f, 1.0f	// Upper right corner
+										// Front face (z = 0)   v0 v1 v2 v3
+    +0.5f, +0.5f, 0.0f,   1.0f, 1.0f,   // top-right
+    +0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom-right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom-left
+    -0.5f, +0.5f, 0.0f,   0.0f, 1.0f,   // top-left
+    									// Back face (z = 1)    v4 v5 v6 v7
+    -0.5f, +0.5f, 1.0f,   1.0f, 1.0f,   // top-right (viewed from outside, back face is reversed in x)
+    -0.5f, -0.5f, 1.0f,   1.0f, 0.0f,   // bottom-right
+    +0.5f, -0.5f, 1.0f,   0.0f, 0.0f,   // bottom-left
+    +0.5f, +0.5f, 1.0f,   0.0f, 1.0f,   // top-left
+    									// Left face (x = -0.5)
+    -0.5f, +0.5f, 1.0f,   1.0f, 1.0f,   // top-right
+    -0.5f, +0.5f, 0.0f,   1.0f, 0.0f,   // bottom-right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom-left
+    -0.5f, -0.5f, 1.0f,   0.0f, 1.0f,   // top-left
+    									// Right face (x = +0.5)
+    +0.5f, +0.5f, 0.0f,   1.0f, 1.0f,   // top-right
+    +0.5f, +0.5f, 1.0f,   1.0f, 0.0f,   // bottom-right
+    +0.5f, -0.5f, 1.0f,   0.0f, 0.0f,   // bottom-left
+    +0.5f, -0.5f, 0.0f,   0.0f, 1.0f,   // top-left
+   										// Top face (y = +0.5)
+    +0.5f, +0.5f, 1.0f,   1.0f, 1.0f,   // top-right
+    +0.5f, +0.5f, 0.0f,   1.0f, 0.0f,   // bottom-right
+    -0.5f, +0.5f, 0.0f,   0.0f, 0.0f,   // bottom-left
+    -0.5f, +0.5f, 1.0f,   0.0f, 1.0f,   // top-left
+    									// Bottom face (y = -0.5)
+    +0.5f, -0.5f, 0.0f,   1.0f, 1.0f,   // top-right
+    +0.5f, -0.5f, 1.0f,   1.0f, 0.0f,   // bottom-right
+    -0.5f, -0.5f, 1.0f,   0.0f, 0.0f,   // bottom-left
+    -0.5f, -0.5f, 0.0f,   0.0f, 1.0f,   // top-left
 		};
 
 		static unsigned int indices[] = {
-			0, 1, 3, 1, 2, 3, // Facing -z (north)
-			4, 5, 7, 5, 6, 7, // Facing +z (south)
-			5, 1, 0, 0, 4, 5, // Facing +x (east)
-			1, 2, 5, 5, 2, 6, // Facing -y (down)
-			0, 3, 4, 4, 3, 7, // Facing +y (up)
-			6, 2, 3, 3, 7, 6  // Facing -x (west)
+			0,  1,  3,   1,  2,  3,   // Front
+    4,  5,  7,   5,  6,  7,   // Back
+    8,  9, 11,   9, 10, 11,   // Left
+    12,13,15,   13,14,15,   // Right
+    16,17,19,   17,18,19,   // Top
+    20,21,23,   21,22,23    // Bottom
 		};
 
 		struct Block {
