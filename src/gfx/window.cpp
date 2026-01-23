@@ -110,7 +110,7 @@ namespace Minecraft {
 			lastx = xpos;
 			lasty = ypos;
 
-			cam.processMouse(xoffset, yoffset, false);
+			cam.processMouse(xoffset, yoffset);
 		}
 
 		void Window::processInput(Renderer &r) {
