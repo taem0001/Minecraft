@@ -10,16 +10,6 @@ namespace Minecraft {
 
 		void bindVAO(struct VAO self) { glBindVertexArray(self.handle); }
 
-		void attrVAO(struct VAO vao, struct VBO vbo, struct VBO ebo, GLuint index, GLint size,
-					 GLenum type, GLsizei offset) {
-			bindVAO(vao);
-			bindVBO(vbo);
-			bindVBO(ebo);
-
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, size, type, GL_FALSE, offset, NULL);
-		}
-
 		void destroyVAO(struct VAO self) {
 			glDeleteVertexArrays(1, &self.handle);
 		}

@@ -36,7 +36,7 @@ namespace Minecraft {
 
 				glm::mat4 getViewMat();
 				void processKey(CamMovement, double);
-				void processMouse(double, double, GLboolean = true);
+				void processMouse(double, double, GLboolean = true, GLboolean = false);
 
 			private:
 				void updateCamVects();

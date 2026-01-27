@@ -8,7 +8,7 @@ using namespace std;
 
 namespace Minecraft {
 	namespace GFX {
-		long filelength(FILE *file) {
+		long _filelength(FILE *file) {
 			long numbytes;
 			long savedpos = ftell(file);
 			fseek(file, 0, SEEK_END);
@@ -24,7 +24,7 @@ namespace Minecraft {
 				std::cerr << "[ERROR] Failed to open shader file." << std::endl;
 				exit(EXIT_FAILURE);
 			}
-			int bytesinfile = filelength(file);
+			int bytesinfile = _filelength(file);
 			unsigned char *buf = (unsigned char *)malloc(bytesinfile + 1);
 			if (!buf) {
 				std::cerr << "[ERROR] Failed to allocate memory." << std::endl;

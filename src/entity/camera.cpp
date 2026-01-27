@@ -60,7 +60,7 @@ namespace Minecraft {
 		}
 
 		void Camera::processMouse(double xoffset, double yoffset,
-								  GLboolean constrainpitch) {
+								  GLboolean constrainpitch, GLboolean constrainyaw) {
 			xoffset *= mousesens;
 			yoffset *= mousesens;
 			yaw += xoffset;
@@ -71,6 +71,12 @@ namespace Minecraft {
 					pitch = 89.0f;
 				if (pitch < -89.0f)
 					pitch = -89.0f;
+			}
+			if (constrainyaw) {
+				if (yaw > 89.0f) 
+					yaw = 89.0f;
+				if (yaw < -89.0f)
+					yaw = -89.0f;
 			}
 
 			updateCamVects();
