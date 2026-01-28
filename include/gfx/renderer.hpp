@@ -1,42 +1,44 @@
 #pragma once
 
 #include "../entity/camera.hpp"
-#include "../util/macros.hpp"
+#include "../meshing/chunkmesher.hpp"
 #include "../world/world.hpp"
-#include "../world/chunk.hpp"
-#include "../world/block.hpp"
+#include "chunkmesh.hpp"
 #include "gfx.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
-#include "vao.hpp"
-#include "vbo.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Minecraft {
 	namespace GFX {
-		enum ShaderType { TRIANGLE = 0 };
-#define SHADERNUM (TRIANGLE + 1)
-#define WIDTH	  1280
-#define HEIGHT	  720
+#define WIDTH  1280
+#define HEIGHT 720
 
 		class Renderer {
 			public:
 				Renderer();
-				~Renderer();
-				void renderWorld(World::World &world);
-				void renderChunk(World::Chunk &chunk);
+
+				void updateChunks(World::World &world);
+				void renderWorld(const World::World &world);
 
 				Entity::Camera &getCam() { return cam; }
-				Shader *getShaders() { return shader; }
-				struct VBO getVBO() { return vbo; }
-				struct VBO getEBO() { return ebo; }
-				struct VAO getVAO() { return vao; }
+				const Entity::Camera &getCam() const { return cam; }
+
+				void setViewPortSize(int w, int h) {
+					this->width = w;
+					this->height = h;
+				}
 
 			private:
-				Shader shader[SHADERNUM];
-				Texture texture;
 				Entity::Camera cam;
-				struct VBO vbo, ebo;
-				struct VAO vao;
+
+				Shader shader;
+				Texture texture;
+
+				int width;
+				int height;
 		};
 	} // namespace GFX
 } // namespace Minecraft
