@@ -77,6 +77,7 @@ namespace Minecraft {
 				glClearColor(0.3, 0.7, 0.9, 1);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+				r.updateChunks(w);
 				r.renderWorld(w);
 				glfwSwapBuffers(handle);
 			}

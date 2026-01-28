@@ -1,11 +1,16 @@
 #include "../../include/world/world.hpp"
-#include <memory>
 
 namespace Minecraft {
 	namespace World {
 		World::World() {
 			Chunk chunk;
-			chunk.init({0, 0, 0});
+			chunk.coord = {0, 0, 0};
+
+			for (int i = 0; i < CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z; i++) {
+				chunk.blocks[i] = DIRT;
+			}
+
+			chunk.mesh (new GFX::ChunkMesh);
 
 			chunks.emplace(chunk.coord, std::move(chunk));
 		}

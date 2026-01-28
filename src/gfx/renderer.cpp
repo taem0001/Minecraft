@@ -5,60 +5,50 @@
 namespace Minecraft {
 	namespace GFX {
 		Renderer::Renderer()
-			: cam(Entity::Camera(glm::vec3(0.0f, 3.0f, 0.0f))),
-			  vbo(createVBO(GL_ARRAY_BUFFER)),
-			  ebo(createVBO(GL_ELEMENT_ARRAY_BUFFER)), vao(createVAO()) {
-			for (int i = 0; i < SHADERNUM; i++) {
-				this->shader[i].init("res/shaders/block.vert",
-									 "res/shaders/block.frag");
-			}
+			: cam(Entity::Camera(glm::vec3(0.0f, 20.0f, 18.0f))), width(WIDTH),
+			  height(HEIGHT) {
+			shader.init("res/shaders/block.vert", "res/shaders/block.frag");
 			texture.init("res/textures/dirt.png");
 		}
 
-		Renderer::~Renderer() {
-			destroyVBO(this->vbo);
-			destroyVBO(this->ebo);
-			destroyVAO(this->vao);
+		void Renderer::updateChunks(World::World &w) {
+			auto &chunks = w.getChunks();
+			for (auto it = chunks.begin(); it != chunks.end(); it++) {
+				auto &chunk = w.getChunk(it->first);
+				if (!chunk.dirty) continue;
+
+				Meshing::MeshData cpu = Meshing::ChunkMesher::build(chunk);
+				chunk.mesh->upload(cpu);
+
+				chunk.dirty = false;
+			}
 		}
 
-		void Renderer::renderWorld(World::World &w) {
-			shader[0].use();
+		void Renderer::renderWorld(const World::World &w) {
+			shader.use();
+			texture.bind();
 
-			glm::mat4 proj =
-				glm::perspective(glm::radians(CASTTOFLOAT(cam.fovy)),
-								 (float)WIDTH / (float)HEIGHT,
-								 CASTTOFLOAT(cam.near), CASTTOFLOAT(cam.far));
-			shader[0].setMat4("projection", proj);
+			glm::mat4 proj = glm::perspective(glm::radians((float)cam.fovy),
+											  (float)width / (float)height,
+											  (float)cam.near, (float)cam.far);
+			shader.setMat4("projection", proj);
 
 			glm::mat4 view = cam.getViewMat();
-			shader[0].setMat4("view", view);
+			shader.setMat4("view", view);
 
-			struct World::Chunk c = w.getChunk();
-			c.generateMesh();
-			renderChunk(c);
-		}
+			auto &chunks = w.getChunks();
+			for (auto it = chunks.begin(); it != chunks.end(); it++) {
+				auto &chunk = w.getChunk(it->first);
+				if (chunk.mesh->empty()) {
+					continue;
+				}
 
-		void Renderer::renderChunk(struct World::Chunk &c) {
-			bufferVBO(this->vbo, c.vertices.data(),
-					  static_cast<GLsizeiptr>(c.vertices.size() *
-											  sizeof(World::Vertex)));
-			bindVBO(this->vbo);
+				glm::mat4 model = glm::mat4(1.0f);
+				model = glm::translate(model, chunk.worldOrigin());
+				shader.setMat4("model", model);
 
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-								  sizeof(World::Vertex), (void *)0);
-			glEnableVertexAttribArray(0);
-
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-								  sizeof(World::Vertex),
-								  (void *)(3 * sizeof(float)));
-			glEnableVertexAttribArray(1);
-
-			bindVAO(this->vao);
-
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, c.offset);
-			shader[0].setMat4("model", model);
-			glDrawArrays(GL_TRIANGLES, 0, c.vertices.size());
+				chunk.mesh->draw();
+			}
 		}
 	} // namespace GFX
 } // namespace Minecraft

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../gfx/gfx.hpp"
-#include "glm/ext/matrix_transform.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -14,7 +13,7 @@ namespace Minecraft {
 
 		const double YAW = -90.0;
 		const double PITCH = 0.0f;
-		const double SPEED = 2.5f;
+		const double SPEED = 3.5f;
 		const double SENSITIVITY = 0.1f;
 		const double FOVY = 45.0f;
 		const double NEAR = 0.1f;
