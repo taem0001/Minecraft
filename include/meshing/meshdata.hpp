@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../block/block.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,7 +10,7 @@ namespace Minecraft {
 		struct Vertex {
 				glm::vec3 position;
 				glm::vec2 uv;
-                float texid;
+                Block::BlockID texid;
 		};
 
 		struct MeshData {

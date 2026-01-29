@@ -8,7 +8,7 @@ namespace Minecraft {
 			: cam(Entity::Camera(glm::vec3(0.0f, 20.0f, 18.0f))), width(WIDTH),
 			  height(HEIGHT) {
 			shader.init("res/shaders/block.vert", "res/shaders/block.frag");
-			texture.init("res/textures/dirt.png");
+			texture.init("res/textures/blockatlas.png");
 		}
 
 		void Renderer::updateChunks(World::World &w) {

@@ -14,8 +14,6 @@ namespace Minecraft {
 
 			private:
 				unsigned int handle;
-				unsigned char *data;
-				int w, h, nrchannels;
 		};
 	} // namespace GFX
 } // namespace Minecraft

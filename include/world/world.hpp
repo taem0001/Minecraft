@@ -17,7 +17,7 @@ namespace Minecraft {
 					return chunks.at(coord);
 				}
 				void setBlock(const ChunkCoord &coord, int x, int y, int z,
-							  BlockID id);
+							  Block::BlockID id);
 				std::unordered_map<ChunkCoord, Chunk> &getChunks() {
 					return chunks;
 				}

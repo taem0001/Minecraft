@@ -11,7 +11,7 @@ namespace Minecraft {
 		}
 
 		void World::setBlock(const ChunkCoord &coord, int x, int y, int z,
-							 BlockID id) {
+							 Block::BlockID id) {
 			chunks.at(coord).setBlock(x, y, z, id);
 		}
 	} // namespace World

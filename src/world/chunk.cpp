@@ -7,8 +7,16 @@ namespace Minecraft {
 			this->coord = coord;
 			this->dirty = true;
 
-			for (int i = 0; i < CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z; i++) {
-				this->blocks[i] = DIRT;
+			for (int z = 0; z < CHUNK_MAX_Z; z++) {
+				for (int y = 0; y < CHUNK_MAX_Y; y++) {
+					for (int x = 0; x < CHUNK_MAX_X; x++) {
+						if (index(x, y, z) % 2 == 0) {
+							setBlock(x, y, z, Block::DIRT);
+						} else {
+							setBlock(x, y, z, Block::STONE);
+						}
+					}
+				}
 			}
 
 			std::cout << "[INFO] Chunk generated at: " << this->coord << std::endl;
@@ -18,11 +26,11 @@ namespace Minecraft {
 			return x + CHUNK_MAX_X * (y + CHUNK_MAX_Y * z);
 		}
 
-		BlockID Chunk::getBlock(int x, int y, int z) const {
+		Block::BlockID Chunk::getBlock(int x, int y, int z) const {
 			return blocks[index(x, y, z)];
 		}
 
-		void Chunk::setBlock(int x, int y, int z, BlockID blockID) {
+		void Chunk::setBlock(int x, int y, int z, Block::BlockID blockID) {
 			if (blocks[index(x, y, z)] == blockID) return;
 
 			blocks[index(x, y, z)] = blockID;
@@ -34,7 +42,7 @@ namespace Minecraft {
 			if (y < 0 || y >= CHUNK_MAX_Y) return false;
 			if (z < 0 || z >= CHUNK_MAX_Z) return false;
 
-			return blocks[index(x, y, z)] == BlockType::AIR;
+			return blocks[index(x, y, z)] == Block::AIR;
 		}
 
 		glm::vec3 Chunk::worldOrigin() const {

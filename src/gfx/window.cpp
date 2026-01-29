@@ -56,6 +56,9 @@ namespace Minecraft {
 			glfwSwapInterval(1);
 
 			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_CULL_FACE);
+
+			glCullFace(GL_FRONT);
 
 			// Log info
 			std::cout << "[INFO] Renderer: " << glGetString(GL_RENDERER) << "."

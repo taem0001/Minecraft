@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../gfx/chunkmesh.hpp"
+#include "../block/block.hpp"
 #include "../util/types.hpp"
 #include <array>
 #include <glm/glm.hpp>
@@ -15,10 +16,6 @@
 
 namespace Minecraft {
 	namespace World {
-		using BlockID = u8;
-
-		enum BlockType : BlockID { AIR, DIRT };
-
 		struct ChunkCoord {
 				int x, y, z;
 
@@ -34,14 +31,14 @@ namespace Minecraft {
 		struct Chunk {
 				ChunkCoord coord;
 				bool dirty = true;
-				std::array<BlockID, CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z>
+				std::array<Block::BlockID, CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z>
 					blocks{};
 				std::unique_ptr<GFX::ChunkMesh> mesh;
 
 				void init(const ChunkCoord &coord);
 				static constexpr int index(int x, int y, int z);
-				BlockID getBlock(int x, int y, int z) const;
-				void setBlock(int x, int y, int z, BlockID blockID);
+				Block::BlockID getBlock(int x, int y, int z) const;
+				void setBlock(int x, int y, int z, Block::BlockID blockID);
 				bool isAirLocal(int x, int y, int z) const;
 				glm::vec3 worldOrigin() const;
 		};

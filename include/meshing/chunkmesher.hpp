@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../world/chunk.hpp"
+#include "../block/block.hpp"
 #include "meshdata.hpp"
 
 namespace Minecraft {
@@ -15,7 +16,7 @@ namespace Minecraft {
 				static bool isAir(const World::Chunk &chunk, int x, int y,
 								  int z);
 				static void emitFace(MeshData &out, int bx, int by, int bz,
-									 FaceDir dir, float texit);
+									 FaceDir dir, Block::BlockID texid);
 		};
 	} // namespace Meshing
 } // namespace Minecraft
