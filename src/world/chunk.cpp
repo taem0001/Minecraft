@@ -10,6 +10,8 @@ namespace Minecraft {
 			for (int i = 0; i < CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z; i++) {
 				this->blocks[i] = DIRT;
 			}
+
+			std::cout << "[INFO] Chunk generated at: " << this->coord << std::endl;
 		}
 
 		constexpr int Chunk::index(int x, int y, int z) {

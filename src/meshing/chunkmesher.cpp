@@ -6,7 +6,7 @@ namespace Minecraft {
 		static constexpr int SY = CHUNK_MAX_Y;
 		static constexpr int SZ = CHUNK_MAX_Z;
 
-		static constexpr int TRI[] = {0, 1, 2, 0, 2, 3};
+		static constexpr unsigned int INDICES[] = {0, 1, 2, 0, 2, 3};
 
 		static constexpr float UV[] = {
 			1.0f, 1.0f, // Top right
@@ -75,6 +75,7 @@ namespace Minecraft {
 		MeshData ChunkMesher::build(const World::Chunk &chunk) {
 			MeshData out;
 			out.vertices.clear();
+			out.indices.clear();
 
 			for (int z = 0; z < SZ; z++) {
 				for (int y = 0; y < SY; y++) {
@@ -103,8 +104,8 @@ namespace Minecraft {
 			return out;
 		}
 
-		void ChunkMesher::emitFace(MeshData &out, int bx,
-								   int by, int bz, FaceDir dir, float texid) {
+		void ChunkMesher::emitFace(MeshData &out, int bx, int by, int bz,
+								   FaceDir dir, float texid) {
 			const float *f = faceVerts(dir);
 
 			// Center the templates
@@ -112,17 +113,20 @@ namespace Minecraft {
 			const float oy = (float)by + 0.5f;
 			const float oz = (float)bz + 0.5f;
 
-			for (int i = 0; i < 6; i++) {
-				int q = TRI[i];
+			unsigned int base = (unsigned int)out.vertices.size();
 
+			for (int i = 0; i < 4; i++) {
 				Vertex v;
-				v.position = {f[3 * q + 0] + ox,
-							  f[3 * q + 1] + oy,
-							  f[3 * q + 2] + oz};
-				v.uv = {UV[2 * q + 0], UV[2 * q + 1]};
+				v.position = {f[3 * i + 0] + ox, f[3 * i + 1] + oy,
+							  f[3 * i + 2] + oz};
+				v.uv = {UV[2 * i + 0], UV[2 * i + 1]};
 				v.texid = texid;
 
 				out.vertices.push_back(v);
+			}
+
+			for (unsigned int idx : INDICES) {
+				out.indices.push_back(base + idx);
 			}
 		}
 	} // namespace Meshing

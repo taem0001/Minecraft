@@ -14,6 +14,7 @@ namespace Minecraft {
 
 		struct MeshData {
 				std::vector<struct Vertex> vertices;
+				std::vector<unsigned int> indices;
 		};
 	} // namespace Meshing
 } // namespace Minecraft

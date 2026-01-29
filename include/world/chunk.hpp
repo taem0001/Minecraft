@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include <memory>
 
 #define CHUNK_MAX_X 16
@@ -23,6 +24,10 @@ namespace Minecraft {
 
 				bool operator==(const ChunkCoord &other) const noexcept {
 					return (x == other.x && y == other.y && z == other.z);
+				}
+
+				friend std::ostream &operator<<(std::ostream &out, const ChunkCoord &cc) noexcept {
+					return out << "(" << cc.x << "; " << cc.y << "; " << cc.z << ")";
 				}
 		};
 

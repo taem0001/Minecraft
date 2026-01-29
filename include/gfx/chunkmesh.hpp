@@ -16,6 +16,7 @@ namespace Minecraft {
 
 				bool empty() const;
 				size_t getVertexCount() const;
+				size_t getIndexCount() const;
 
 			private:
 				void createGLObjects();
@@ -24,7 +25,9 @@ namespace Minecraft {
 
 				unsigned int vao;
 				unsigned int vbo;
+				unsigned int ebo;
 				size_t vertexCount;
+				size_t indexCount;
 				bool configured;
 		};
 	} // namespace GFX
