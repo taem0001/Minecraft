@@ -10,20 +10,12 @@ namespace Minecraft {
 			public:
 				World();
 
-				Chunk &getChunk(const ChunkCoord &coord) {
-					return chunks.at(coord);
-				}
-				const Chunk &getChunk(const ChunkCoord &coord) const {
-					return chunks.at(coord);
-				}
+				Chunk &getChunk(const ChunkCoord &coord);
+				const Chunk &getChunk(const ChunkCoord &coord) const;
+				std::unordered_map<ChunkCoord, Chunk> &getChunks();
+				const std::unordered_map<ChunkCoord, Chunk> &getChunks() const;
 				void setBlock(const ChunkCoord &coord, int x, int y, int z,
 							  Block::BlockID id);
-				std::unordered_map<ChunkCoord, Chunk> &getChunks() {
-					return chunks;
-				}
-				const std::unordered_map<ChunkCoord, Chunk> &getChunks() const {
-					return chunks;
-				}
 
 			private:
 				std::unordered_map<ChunkCoord, Chunk> chunks;
