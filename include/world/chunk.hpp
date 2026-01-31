@@ -19,8 +19,16 @@ namespace Minecraft {
 		struct ChunkCoord {
 				int x, y, z;
 
+				glm::vec3 worldOrigin() const {
+					return {x * CHUNK_MAX_X, y * CHUNK_MAX_Y, z * CHUNK_MAX_Z};
+				}
+
 				bool operator==(const ChunkCoord &other) const noexcept {
 					return (x == other.x && y == other.y && z == other.z);
+				}
+
+				ChunkCoord operator+(const ChunkCoord &other) const noexcept {
+					return {x + other.x, y + other.y, z + other.z};
 				}
 
 				friend std::ostream &operator<<(std::ostream &out, const ChunkCoord &cc) noexcept {
@@ -33,14 +41,10 @@ namespace Minecraft {
 				bool dirty = true;
 				std::array<Block::BlockID, CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z>
 					blocks{};
-				std::unique_ptr<GFX::ChunkMesh> mesh;
 
-				void init(const ChunkCoord &coord);
 				static constexpr int index(int x, int y, int z);
-				Block::BlockID getBlock(int x, int y, int z) const;
-				void setBlock(int x, int y, int z, Block::BlockID blockID);
-				bool isAirLocal(int x, int y, int z) const;
-				glm::vec3 worldOrigin() const;
+				void setLocalBlock(int lx, int ly, int lz, Block::BlockID id);
+				Block::BlockID getLocalBlock(int lx, int ly, int lz) const;
 		};
 	} // namespace World
 } // namespace Minecraft
