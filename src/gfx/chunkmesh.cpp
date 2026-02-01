@@ -1,5 +1,4 @@
 #include "../../include/gfx/chunkmesh.hpp"
-#include <iostream>
 
 namespace Minecraft {
 	namespace GFX {

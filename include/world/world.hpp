@@ -2,7 +2,6 @@
 
 #include "../gfx/chunkmesh.hpp"
 #include "chunk.hpp"
-#include <unordered_map>
 
 namespace Minecraft {
 	namespace World {

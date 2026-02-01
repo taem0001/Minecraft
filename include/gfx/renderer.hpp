@@ -2,14 +2,12 @@
 
 #include "../entity/camera.hpp"
 #include "../meshing/chunkmesher.hpp"
+#include "../util/includes.hpp"
 #include "../world/world.hpp"
 #include "chunkmesh.hpp"
 #include "gfx.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace Minecraft {
 	namespace GFX {

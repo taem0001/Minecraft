@@ -1,6 +1,4 @@
 #include "../../include/gfx/renderer.hpp"
-#include <iostream>
-#include <stdlib.h>
 
 namespace Minecraft {
 	namespace GFX {

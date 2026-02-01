@@ -1,14 +1,9 @@
 #pragma once
 
-#include "../gfx/chunkmesh.hpp"
 #include "../block/block.hpp"
+#include "../gfx/chunkmesh.hpp"
+#include "../util/includes.hpp"
 #include "../util/types.hpp"
-#include <array>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-#include <memory>
 
 #define CHUNK_MAX_X 16
 #define CHUNK_MAX_Y 16
@@ -31,15 +26,18 @@ namespace Minecraft {
 					return {x + other.x, y + other.y, z + other.z};
 				}
 
-				friend std::ostream &operator<<(std::ostream &out, const ChunkCoord &cc) noexcept {
-					return out << "(" << cc.x << "; " << cc.y << "; " << cc.z << ")";
+				friend std::ostream &operator<<(std::ostream &out,
+												const ChunkCoord &cc) noexcept {
+					return out << "(" << cc.x << "; " << cc.y << "; " << cc.z
+							   << ")";
 				}
 		};
 
 		struct Chunk {
 				ChunkCoord coord;
 				bool dirty = true;
-				std::array<Block::BlockID, CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z>
+				std::array<Block::BlockID,
+						   CHUNK_MAX_X * CHUNK_MAX_Y * CHUNK_MAX_Z>
 					blocks{};
 
 				static constexpr int index(int x, int y, int z);
