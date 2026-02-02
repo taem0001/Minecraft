@@ -3,7 +3,7 @@
 namespace Minecraft {
 	namespace GFX {
 		Renderer::Renderer()
-			: cam(Entity::Camera(glm::vec3(0.0f, 20.0f, 18.0f))), width(WIDTH),
+			: cam(Entity::Camera(glm::vec3(40.0f, 10.0f, 40.0f))), width(WIDTH),
 			  height(HEIGHT) {
 			shader.init("res/shaders/block.vert", "res/shaders/block.frag");
 			texture.init("res/textures/blockatlas.png");
@@ -14,7 +14,7 @@ namespace Minecraft {
 				return w.getBlockWorld(x, y, z);
 			};
 
-			auto &chunks = w.getChunks();
+			auto chunks = w.getVisibleChunks(cam.pos);
 			for (auto it = chunks.begin(); it != chunks.end(); it++) {
 				auto &chunk = it->second;
 				if (!chunk.dirty) continue;

@@ -2,12 +2,10 @@
 
 namespace Minecraft {
 	namespace World {
-		World::World() {
-			for (int z = 0; z < CHUNK_MAX_Z * 2; z++) {
-				for (int y = 0; y < CHUNK_MAX_Y; y++) {
-					for (int x = 0; x < CHUNK_MAX_X; x++) {
-						setBlockWorld(x, y, z, Block::DIRT);
-					}
+		World::World() : CHUNKRADIUS(1.0) {
+			for (int z = 0; z < CHUNK_MAX_Z * 5; z++) {
+				for (int x = 0; x < CHUNK_MAX_X * 5; x++) {
+					setBlockWorld(x, 0, z, Block::DIRT);
 				}
 			}
 		}
@@ -45,6 +43,25 @@ namespace Minecraft {
 			return chunks;
 		}
 
+		const std::unordered_map<ChunkCoord, Chunk>
+		World::getVisibleChunks(const glm::vec3 &playerPos) const {
+			std::unordered_map<ChunkCoord, Chunk> res;
+
+			// Get player's position in chunk coordinates
+			ChunkCoord playerCC = {floorDiv(playerPos[0], CHUNK_MAX_X),
+								   floorDiv(playerPos[1], CHUNK_MAX_Y),
+								   floorDiv(playerPos[2], CHUNK_MAX_Z)};
+
+			// Calculate the distances between the chunks and add them if they
+			// are within the radius
+			for (auto &[coord, chunk] : chunks) {
+				double dist = EUCLDIST(playerCC, coord);
+				if (dist <= CHUNKRADIUS) res.emplace(coord, std::move(chunk));
+			}
+
+			return res;
+		}
+
 		void World::markDirtyIfLoaded(const ChunkCoord &coord) {
 			Chunk *c = getChunk(coord);
 			if (c != nullptr) {
@@ -59,6 +76,7 @@ namespace Minecraft {
 								floorDiv(wz, CHUNK_MAX_Z)};
 			const Chunk *chunk = getChunk(coord);
 
+			// If chunk doesn't exist, then return air
 			if (chunk == nullptr) return Block::AIR;
 
 			// Convert world coordinates to local chunk coordinates
