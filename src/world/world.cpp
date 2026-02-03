@@ -2,7 +2,7 @@
 
 namespace Minecraft {
 	namespace World {
-		World::World() : CHUNKRADIUS(1.0) {
+		World::World() {
 			for (int z = 0; z < CHUNK_MAX_Z * 5; z++) {
 				for (int x = 0; x < CHUNK_MAX_X * 5; x++) {
 					setBlockWorld(x, 0, z, Block::DIRT);
@@ -41,25 +41,6 @@ namespace Minecraft {
 
 		const std::unordered_map<ChunkCoord, Chunk> &World::getChunks() const {
 			return chunks;
-		}
-
-		const std::unordered_map<ChunkCoord, Chunk>
-		World::getVisibleChunks(const glm::vec3 &playerPos) const {
-			std::unordered_map<ChunkCoord, Chunk> res;
-
-			// Get player's position in chunk coordinates
-			ChunkCoord playerCC = {floorDiv(playerPos[0], CHUNK_MAX_X),
-								   floorDiv(playerPos[1], CHUNK_MAX_Y),
-								   floorDiv(playerPos[2], CHUNK_MAX_Z)};
-
-			// Calculate the distances between the chunks and add them if they
-			// are within the radius
-			for (auto &[coord, chunk] : chunks) {
-				double dist = EUCLDIST(playerCC, coord);
-				if (dist <= CHUNKRADIUS) res.emplace(coord, std::move(chunk));
-			}
-
-			return res;
 		}
 
 		void World::markDirtyIfLoaded(const ChunkCoord &coord) {
@@ -130,19 +111,6 @@ namespace Minecraft {
 			// Place block at the coordinates
 			chunk.setLocalBlock(localx, localy, localz, id);
 			chunk.dirty = true;
-		}
-
-		inline int World::floorDiv(int a, int b) {
-			int q = a / b;
-			int r = a % b;
-			if (r != 0 && ((r < 0) != (b < 0))) --q;
-			return q;
-		}
-
-		inline int World::floorMod(int a, int b) {
-			int r = a % b;
-			if (r < 0) r += b;
-			return r;
 		}
 	} // namespace World
 } // namespace Minecraft

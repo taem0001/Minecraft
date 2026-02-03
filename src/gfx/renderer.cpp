@@ -4,7 +4,7 @@ namespace Minecraft {
 	namespace GFX {
 		Renderer::Renderer()
 			: cam(Entity::Camera(glm::vec3(40.0f, 10.0f, 40.0f))), width(WIDTH),
-			  height(HEIGHT) {
+			  height(HEIGHT), RENDER_RADIUS(SQUARE(1.5)) {
 			shader.init("res/shaders/block.vert", "res/shaders/block.frag");
 			texture.init("res/textures/blockatlas.png");
 		}
@@ -14,7 +14,7 @@ namespace Minecraft {
 				return w.getBlockWorld(x, y, z);
 			};
 
-			auto chunks = w.getVisibleChunks(cam.pos);
+			auto &chunks = w.getChunks();
 			for (auto it = chunks.begin(); it != chunks.end(); it++) {
 				auto &chunk = it->second;
 				if (!chunk.dirty) continue;
@@ -41,8 +41,15 @@ namespace Minecraft {
 			glm::mat4 view = cam.getViewMat();
 			shader.setMat4("view", view);
 
+			World::ChunkCoord playerChunk = {floorDiv(cam.pos[0], CHUNK_MAX_X),
+											 floorDiv(cam.pos[1], CHUNK_MAX_Y),
+											 floorDiv(cam.pos[2], CHUNK_MAX_Z)};
+
 			for (auto &[coord, mesh] : meshes) {
 				if (mesh.empty()) continue;
+
+				double dist = EUCLDIST(playerChunk, coord);
+				if (dist > RENDER_RADIUS) continue;
 
 				glm::mat4 model =
 					glm::translate(glm::mat4(1.0f), coord.worldOrigin());

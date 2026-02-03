@@ -3,6 +3,7 @@
 #include "../entity/camera.hpp"
 #include "../meshing/chunkmesher.hpp"
 #include "../util/includes.hpp"
+#include "../util/macros.hpp"
 #include "../world/world.hpp"
 #include "chunkmesh.hpp"
 #include "gfx.hpp"
@@ -36,8 +37,8 @@ namespace Minecraft {
 				Shader shader;
 				Texture texture;
 
-				int width;
-				int height;
+				int width, height;
+				double const RENDER_RADIUS;
 		};
 	} // namespace GFX
 } // namespace Minecraft
