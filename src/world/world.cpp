@@ -3,9 +3,19 @@
 namespace Minecraft {
 	namespace World {
 		World::World() {
-			for (int z = 0; z < CHUNK_MAX_Z * 5; z++) {
-				for (int x = 0; x < CHUNK_MAX_X * 5; x++) {
-					setBlockWorld(x, 0, z, Block::DIRT);
+			for (int z = 0; z < CHUNK_MAX_Z * 10; z++) {
+				for (int y = 0; y < CHUNK_MAX_Y; y++) {
+					for (int x = 0; x < CHUNK_MAX_X * 10; x++) {
+						double perlin =
+							Perlin::perlin((double)x * 0.01, (double)y * 0.01,
+										   (double)z * 0.01);
+						std::cout << "[INFO] " << perlin << std::endl;
+						if (perlin < 0.0) {
+							setBlockWorld(x, y, z, Block::STONE);
+						} else {
+							setBlockWorld(x, y, z, Block::AIR);
+						}
+					}
 				}
 			}
 		}

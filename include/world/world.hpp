@@ -3,6 +3,7 @@
 #include "../gfx/chunkmesh.hpp"
 #include "../util/includes.hpp"
 #include "../util/macros.hpp"
+#include "../util/perlin.hpp"
 #include "chunk.hpp"
 
 namespace Minecraft {

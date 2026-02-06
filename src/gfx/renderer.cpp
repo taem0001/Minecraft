@@ -14,10 +14,15 @@ namespace Minecraft {
 				return w.getBlockWorld(x, y, z);
 			};
 
+			World::ChunkCoord playerChunk = {floorDiv(cam.pos[0], CHUNK_MAX_X),
+											 floorDiv(cam.pos[1], CHUNK_MAX_Y),
+											 floorDiv(cam.pos[2], CHUNK_MAX_Z)};
+
 			auto &chunks = w.getChunks();
 			for (auto it = chunks.begin(); it != chunks.end(); it++) {
+				double dist = EUCLDIST(playerChunk, it->first);
 				auto &chunk = it->second;
-				if (!chunk.dirty) continue;
+				if (!chunk.dirty || dist >= RENDER_RADIUS) continue;
 
 				Meshing::MeshData cpu =
 					Meshing::ChunkMesher::build(chunk, query);
@@ -49,7 +54,7 @@ namespace Minecraft {
 				if (mesh.empty()) continue;
 
 				double dist = EUCLDIST(playerChunk, coord);
-				if (dist > RENDER_RADIUS) continue;
+				if (dist >= RENDER_RADIUS) continue;
 
 				glm::mat4 model =
 					glm::translate(glm::mat4(1.0f), coord.worldOrigin());
